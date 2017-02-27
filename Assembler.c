@@ -22,9 +22,9 @@ typedef struct NODE
 // All Functions are decleared here.
 node* getnode();
 node* insertKeyword(node* root, char* keyword, char* binaryCodeOfKeyword);
-void convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal);
-void getBinaryCodeOfKeyword(node* root, char* keyword, char* machineCode);
-void appendBinaryCodeOfOperand(char* machineCode, int operand_value, int start_from);
+int convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal);
+int getBinaryCodeOfKeyword(node* root, char* keyword, char* machineCode);
+int appendBinaryCodeOfOperand(char* machineCode, int operand_value, int start_from);
 
 
 int main(int argc, char const *argv[])
@@ -58,30 +58,54 @@ int main(int argc, char const *argv[])
 		char machineCode[50];
 		getBinaryCodeOfKeyword(root, current_instruction, machineCode);
 		int lenOfInstruction = strlen(machineCode);
+
+		// Validity of input is checked using this variable which will abort the program if
+		// invalid input is provided
+		int validity = 1;
 		switch(lenOfInstruction) {
 			case (4) :
 				fscanf(fp2,"%d %d %d",&operand1,&operand2,&operand3);
-				getBinaryCodeOfKeyword(root, current_instruction, machineCode);
-				appendBinaryCodeOfOperand(machineCode,operand1,4);
-				appendBinaryCodeOfOperand(machineCode,operand2,8);
-				appendBinaryCodeOfOperand(machineCode,operand1,12);
+				validity = validity * getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+				validity = validity * appendBinaryCodeOfOperand(machineCode,operand1,4);
+				validity = validity * appendBinaryCodeOfOperand(machineCode,operand2,8);
+				validity = validity * appendBinaryCodeOfOperand(machineCode,operand1,12);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
 				fprintf(fp3, "%s\n", machineCode);
 				break;
 			case (8) :
 				fscanf(fp2,"%d %d",&operand1,&operand2);
-				getBinaryCodeOfKeyword(root, current_instruction, machineCode);
-				appendBinaryCodeOfOperand(machineCode,operand1,8);
-				appendBinaryCodeOfOperand(machineCode,operand2,12);
+				validity = validity * getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+				validity = validity * appendBinaryCodeOfOperand(machineCode,operand1,8);
+				validity = validity * appendBinaryCodeOfOperand(machineCode,operand2,12);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
 				fprintf(fp3, "%s\n", machineCode);
 				break;
 			case (12) :
 				fscanf(fp2,"%d",&operand1);
-				getBinaryCodeOfKeyword(root, current_instruction, machineCode);
-				appendBinaryCodeOfOperand(machineCode,operand1,12);
+				validity = validity * getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+				validity = validity * appendBinaryCodeOfOperand(machineCode,operand1,12);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
 				fprintf(fp3, "%s\n", machineCode);
 				break;
 			case (16) :
-				getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+				validity = validity * getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
 				fprintf(fp3, "%s\n", machineCode);
 				break;
 			default:
@@ -92,7 +116,8 @@ int main(int argc, char const *argv[])
 }
 
 // getnode() function allotes memory to a node with leaf set as 0.
-node* getnode() {
+node* getnode() 
+{
 	node* new_node;
 	new_node = (node*)malloc(sizeof(node));
 	new_node->leaf = 0;
@@ -123,8 +148,12 @@ node* insertKeyword(node* root, char* keyword, char* binaryCodeOfKeyword)
 
 // convertDecimalToBinary function converts Decimal number to Binary Representation
 // of the same number in 4 - bit format
-void convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal)
+int convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal)
 {
+	if(number > 15 || number < 0){
+		printf("Operand Value not belongs to [0,15]\n");
+		return -1;
+	}
 	int ind = 0;
 	while(number > 0){
 		binaryRepresentationOfDecimal[ind] = (number % 2) + '0';
@@ -151,31 +180,41 @@ void convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal)
 		bin[i] = binaryRepresentationOfDecimal[k];
 	}
 	strcpy(binaryRepresentationOfDecimal,bin);
+	return 1;
 }
 
 // getBinaryCodeOfKeyword function retrives the Binary Code of the keyword kept in TRIE
-void getBinaryCodeOfKeyword(node* root, char* keyword, char* machineCode)
+int getBinaryCodeOfKeyword(node* root, char* keyword, char* machineCode)
 {
 	node* v = root;
 	int i = 0;
 	while(keyword[i] != '\0'){
 		node* temp = v->child[keyword[i] - 'A'];
+		if(temp == NULL){
+			printf("Invalid Keyword in input\n");
+			return -1;
+		}
 		v = temp;
 		i++;
 	}
 	strcpy(machineCode,v->binarycode);
+	return 1;
 }
 
 // appendBinaryCodeOfOperand function appends the binary code of opernad in machine code
 // appended binary code is of 4 - bit Size
-void appendBinaryCodeOfOperand(char* machineCode, int operand_value, int start_from)
+int appendBinaryCodeOfOperand(char* machineCode, int operand_value, int start_from)
 {
 	char BinarycodeOfDecimal[100];
-	convertDecimalToBinary(operand_value,BinarycodeOfDecimal);
+	int validity = convertDecimalToBinary(operand_value,BinarycodeOfDecimal);
+	if(validity == -1){
+		return -1;
+	}
 	int ind = 0;
 	for(ind = 0;ind < 4;ind++,start_from++){
 		machineCode[start_from] = BinarycodeOfDecimal[ind];
 	}
 	machineCode[start_from] = '\0';
 	printf("%s\n",machineCode);
+	return 1;
 }

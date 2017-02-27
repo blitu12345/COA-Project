@@ -66,9 +66,24 @@ int main(int argc, char const *argv[])
 			case (4) :
 				fscanf(fp2,"%d %d %d",&operand1,&operand2,&operand3);
 				validity = validity * getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
 				validity = validity * appendBinaryCodeOfOperand(machineCode,operand1,4);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
 				validity = validity * appendBinaryCodeOfOperand(machineCode,operand2,8);
-				validity = validity * appendBinaryCodeOfOperand(machineCode,operand1,12);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
+				validity = validity * appendBinaryCodeOfOperand(machineCode,operand3,12);
 				if(validity == -1){
 					printf("Invalid Arguments\n");
 					printf("Program Aborted\n");
@@ -79,7 +94,17 @@ int main(int argc, char const *argv[])
 			case (8) :
 				fscanf(fp2,"%d %d",&operand1,&operand2);
 				validity = validity * getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
 				validity = validity * appendBinaryCodeOfOperand(machineCode,operand1,8);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
 				validity = validity * appendBinaryCodeOfOperand(machineCode,operand2,12);
 				if(validity == -1){
 					printf("Invalid Arguments\n");
@@ -91,6 +116,11 @@ int main(int argc, char const *argv[])
 			case (12) :
 				fscanf(fp2,"%d",&operand1);
 				validity = validity * getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+				if(validity == -1){
+					printf("Invalid Arguments\n");
+					printf("Program Aborted\n");
+					return 0;
+				}
 				validity = validity * appendBinaryCodeOfOperand(machineCode,operand1,12);
 				if(validity == -1){
 					printf("Invalid Arguments\n");
@@ -215,6 +245,5 @@ int appendBinaryCodeOfOperand(char* machineCode, int operand_value, int start_fr
 		machineCode[start_from] = BinarycodeOfDecimal[ind];
 	}
 	machineCode[start_from] = '\0';
-	printf("%s\n",machineCode);
 	return 1;
 }

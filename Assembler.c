@@ -1,8 +1,17 @@
+/*
+This program uses Trie Data Structure to store the opcodes and their corresponding Binary Codes.
+Set of Instructions in the file "instructions.txt" are converted to Binary Codes in "machineCodes.txt".
+Details of each function is defined after it in comments.
+*/
+
+// C Standard Libraries used in the program is imported here.
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 
+
+// NODE struct is used for TRIE Data Structure.
 typedef struct NODE
 {
 	struct NODE* child[26];
@@ -10,6 +19,7 @@ typedef struct NODE
 	char binarycode[16];
 }node;
 
+// All Functions are decleared here.
 node* getnode();
 node* insertKeyword(node* root, char* keyword, char* binaryCodeOfKeyword);
 void convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal);
@@ -20,12 +30,16 @@ void appendBinaryCodeOfOperand(char* machineCode, int operand_value, int start_f
 int main(int argc, char const *argv[])
 {
 	/* code */
+
+	//root node of TRIE
 	node* root = NULL;
 	FILE* fp1;
 	fp1 = fopen("opcode.txt","r");
 	char opcode[100];
 	char binarycode[100];
 
+	// Scans the opcodes with their corresponding binary code from "opcode.txt"
+	// and insert them into TRIE 
 	while(fscanf(fp1,"%s %s",opcode,binarycode)!=EOF) {
 		root = insertKeyword(root, opcode, binarycode);
 	}	
@@ -37,6 +51,9 @@ int main(int argc, char const *argv[])
 	int operand1;
 	int operand2;
 	int operand3;
+
+	// Scans the instructions from the file "instructions.txt" and convert them into
+	// binary codes. Binary Codes are written in the file "machinecodes.txt"
 	while(fscanf(fp2,"%s",current_instruction) != EOF) {
 		char machineCode[50];
 		getBinaryCodeOfKeyword(root, current_instruction, machineCode);
@@ -74,6 +91,7 @@ int main(int argc, char const *argv[])
 	return 0;
 }
 
+// getnode() function allotes memory to a node with leaf set as 0.
 node* getnode() {
 	node* new_node;
 	new_node = (node*)malloc(sizeof(node));
@@ -81,6 +99,8 @@ node* getnode() {
 	return new_node;
 }
 
+// insertKeyword inserts the keyowrd in the TRIE. All the Binary Code of each opcode is
+// kept in "opcodes.txt".
 node* insertKeyword(node* root, char* keyword, char* binaryCodeOfKeyword)
 {
 	if(root == NULL){
@@ -101,6 +121,8 @@ node* insertKeyword(node* root, char* keyword, char* binaryCodeOfKeyword)
 	return root;
 }
 
+// convertDecimalToBinary function converts Decimal number to Binary Representation
+// of the same number in 4 - bit format
 void convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal)
 {
 	int ind = 0;
@@ -131,6 +153,7 @@ void convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal)
 	strcpy(binaryRepresentationOfDecimal,bin);
 }
 
+// getBinaryCodeOfKeyword function retrives the Binary Code of the keyword kept in TRIE
 void getBinaryCodeOfKeyword(node* root, char* keyword, char* machineCode)
 {
 	node* v = root;
@@ -143,6 +166,8 @@ void getBinaryCodeOfKeyword(node* root, char* keyword, char* machineCode)
 	strcpy(machineCode,v->binarycode);
 }
 
+// appendBinaryCodeOfOperand function appends the binary code of opernad in machine code
+// appended binary code is of 4 - bit Size
 void appendBinaryCodeOfOperand(char* machineCode, int operand_value, int start_from)
 {
 	char BinarycodeOfDecimal[100];

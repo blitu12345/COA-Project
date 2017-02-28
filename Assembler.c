@@ -25,7 +25,8 @@ node* insertKeyword(node* root, char* keyword, char* binaryCodeOfKeyword);
 int convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal);
 int getBinaryCodeOfKeyword(node* root, char* keyword, char* machineCode);
 int appendBinaryCodeOfOperand(char* machineCode, int operand_value, int start_from);
-
+int syntax_checker(node* root);
+int not_int(char* number);
 
 int main(int argc, char const *argv[])
 {
@@ -37,12 +38,16 @@ int main(int argc, char const *argv[])
 	fp1 = fopen("opcode.txt","r");
 	char opcode[100];
 	char binarycode[100];
-
 	// Scans the opcodes with their corresponding binary code from "opcode.txt"
 	// and insert them into TRIE 
 	while(fscanf(fp1,"%s %s",opcode,binarycode)!=EOF) {
 		root = insertKeyword(root, opcode, binarycode);
-	}	
+	}
+	if(syntax_checker(root)){
+		printf("Invalid Arguments\n");
+		printf("Program Aborted\n");
+		return 0;
+	}
 	FILE* fp2;
 	FILE* fp3;
 	fp2 = fopen("instructions.txt","r");
@@ -56,9 +61,12 @@ int main(int argc, char const *argv[])
 	// binary codes. Binary Codes are written in the file "machinecodes.txt"
 	while(fscanf(fp2,"%s",current_instruction) != EOF) {
 		char machineCode[50];
-		getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+		int temp = getBinaryCodeOfKeyword(root, current_instruction, machineCode);
 		int lenOfInstruction = strlen(machineCode);
-
+		if(temp == -1){
+			printf("Invalid opcode");
+			return 0;
+		}
 		// Validity of input is checked using this variable which will abort the program if
 		// invalid input is provided
 		int validity = 1;
@@ -186,8 +194,8 @@ int convertDecimalToBinary(int number, char* binaryRepresentationOfDecimal)
 	}
 	int ind = 0;
 	while(number > 0){
-		binaryRepresentationOfDecimal[ind] = (number % 2) + '0';
-		number >>= 1;
+		binaryRepresentationOfDecimal[ind] = (number % 2) + '0';//reminder
+		number >>= 1;//remaining value
 		ind++;
 	}
 	binaryRepresentationOfDecimal[ind] = '\0';
@@ -221,7 +229,6 @@ int getBinaryCodeOfKeyword(node* root, char* keyword, char* machineCode)
 	while(keyword[i] != '\0'){
 		node* temp = v->child[keyword[i] - 'A'];
 		if(temp == NULL){
-			printf("Invalid Keyword in input\n");
 			return -1;
 		}
 		v = temp;
@@ -246,4 +253,59 @@ int appendBinaryCodeOfOperand(char* machineCode, int operand_value, int start_fr
 	}
 	machineCode[start_from] = '\0';
 	return 1;
+}
+
+int syntax_checker(node* root)
+{
+	FILE* fpcheck;
+	fpcheck = fopen("instructions.txt","r");
+	char instruct[100];
+	char operand1[100];
+	char operand2[100];
+	char operand3[100];
+	char current_instruction[100];
+	char machineCode[100];
+	while(fscanf(fpcheck,"%s",current_instruction) != EOF)
+	{
+		getBinaryCodeOfKeyword(root, current_instruction, machineCode);
+		int lenOfInstruction = strlen(machineCode);
+		int validity = 1;
+		switch(lenOfInstruction) {
+			case (4) :
+				fscanf(fpcheck,"%s %s %s",operand1,operand2,operand3);
+				if(not_int(operand1) || not_int(operand2) || not_int(operand3)){
+					return 1;
+				}
+				break;
+			case (8) :
+				fscanf(fpcheck,"%s %s",operand1,operand2);
+				if(not_int(operand1) || not_int(operand2)){
+					return 1;
+				}
+				break;
+			case (12) :
+				fscanf(fpcheck,"%s",operand1);
+				if(not_int(operand1)){
+					return 1;
+				}
+				break;
+			case (16) :
+				break;
+			default:
+				break;
+		}
+	}
+	return 0;
+}
+
+int not_int(char* number)
+{
+	int i = 0;
+	while(number[i] != '\0'){
+		if(number[i] < '0' || number[i] > '9'){
+			return 1;
+		}
+		i++;
+	}
+	return 0;
 }

@@ -18,6 +18,29 @@ typedef struct NODE
 	int command_id;
 }node;
 
+
+node* getnode();
+node* getBinaryCodesTrie();
+int* getDetailsOfInstruction(node* root, char* binaryCodeOfInstruction);
+int check_pow();
+void getOperand(char* binaryCodeOfInstruction, char* opernad, int start);
+int convertBinaryToDecimal(char* binaryCodeForOperand);
+int check_binary_code(char* binaryCode);
+void GAL(char* binaryCodeOfInstruction, FILE* fpstatus);
+void MFS(char* binaryCodeOfInstruction, FILE* fpstatus);
+void SHS(char* binaryCodeOfInstruction, FILE* fpstatus);
+void ISO(char* binaryCodeOfInstruction, FILE* fpstatus);
+void ZOM(char* binaryCodeOfInstruction, FILE* fpstatus);
+void MOD(char* binaryCodeOfInstruction, FILE* fpstatus);
+void APR(char* binaryCodeOfInstruction, FILE* fpstatus);
+void SLT(char* binaryCodeOfInstruction, FILE* fpstatus);
+void POW(char* binaryCodeOfInstruction, FILE* fpstatus);
+void FLS(char* binaryCodeOfInstruction, FILE* fpstatus);
+void CLP(char* binaryCodeOfInstruction, FILE* fpstatus);
+void MME(char* binaryCodeOfInstruction, FILE* fpstatus);
+void HLT(char* binaryCodeOfInstruction, FILE* fpstatus);
+void print_status(FILE* fpstatus);
+
 int main(int argc, char const *argv[])
 {
 	int i = 0;
@@ -30,7 +53,7 @@ int main(int argc, char const *argv[])
 	FILE* fimages;
 	fimages = fopen("imagesdetails.txt","r");
 	int image;
-	while(fscanf(fimages,"%d ",image) != EOF)
+	while(fscanf(fimages,"%d ",&image) != EOF)
 	{
 		image_status[image - 1] = 1;
 	}
@@ -80,7 +103,7 @@ node* getBinaryCodesTrie() // create binary trie tree data structure
 	int commandindex = 0;
 	int flagindex = 0;
 
-	while(fscanf(fp,"%s %s",opode,binaryCode) != EOF)
+	while(fscanf(fp,"%s %s",opcode,binaryCode) != EOF)
 	{
 		int len = strlen(binaryCode);
 		int isFlag = 0;
@@ -154,7 +177,7 @@ int check_pow()
 	}
 	return -1;
 }
-void getOperand(char* binaryCodeOfInstruction, char* opernad, int start)
+void getOperand(char* binaryCodeOfInstruction, char* operand, int start)
 {
 	int ind = 0;
 	while(ind <= 3){
@@ -178,9 +201,9 @@ int check_binary_code(char* binaryCode)
 	int ind = 0;
 	while(binaryCode[ind] != '\0') {
 		if(binaryCode[ind] != '0' && binaryCode[ind] != '1'){
-			ind++; //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 			return 0;
 		}
+		ind++;
 	}
 	return 1;
 }

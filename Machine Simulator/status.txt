@@ -1,0 +1,35 @@
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+POW successfully executed
+System is turned on
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+CLP successfully executed
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+CLP successfully executed
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+CLP successfully executed
+python view.py 1 python delete.py 1
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+GAL successfully executed
+python view.py 2 python delete.py 2
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+GAL successfully executed
+python view.py 3 python delete.py 3
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+GAL successfully executed
+python view.py 2 python delete.py 2
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+GAL successfully executed
+Image not exist in Library
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Set || ALU Operation Flag : Unset
+MOD successfully executed
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+MME successfully executed
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+ZOM successfully executed
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+SLT successfully executed
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+MFS successfully executed
+Overflow Flag : Unset || Negative Flag : Unset || Zero Flag : Unset || ALU Operation Flag : Unset
+POW successfully executed
+System is turned off

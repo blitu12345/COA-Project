@@ -24,7 +24,12 @@ typedef struct NODE
 node* getnode();
 node* getBinaryCodesTrie();
 int* getDetailsOfInstruction(node* root, char* binaryCodeOfInstruction);
+<<<<<<< HEAD
 void getOperand(char* binaryCodeOfInstruction, char* operand, int start);
+=======
+int check_pow();
+void getOperand(char* binaryCodeOfInstruction, char* opernad, int start);
+>>>>>>> origin/master
 int convertBinaryToDecimal(char* binaryCodeForOperand);
 int check_binary_code(char* binaryCode);
 void GAL(char* binaryCodeOfInstruction, FILE* fpstatus);
@@ -51,8 +56,17 @@ int main(int argc, char const *argv[])
 	for(i = 0;i < flag_count; i++){ // initialising all flags to 0
 		flag[i] = 0;
 	}
+<<<<<<< HEAD
 	for(i = 0;i < number_Of_Images; i++){ // initialising all image_status to 0
 		image_status[i] = 0;
+=======
+	FILE* fimages;
+	fimages = fopen("imagesdetails.txt","r");
+	int image;
+	while(fscanf(fimages,"%d ",&image) != EOF)
+	{
+		image_status[image - 1] = 1;
+>>>>>>> origin/master
 	}
 	node* root = getBinaryCodesTrie(); // initialising trie with opcodes and binarycode
 	FILE* fpstatus;
@@ -155,7 +169,11 @@ node* getBinaryCodesTrie() // create binary trie tree data structure
 	int commandindex = 0;
 	int flagindex = 0;
 
+<<<<<<< HEAD
 	while(fscanf(fp,"%s %s",opcode,binaryCode) != EOF) // loading binary codes into trie
+=======
+	while(fscanf(fp,"%s %s",opcode,binaryCode) != EOF)
+>>>>>>> origin/master
 	{
 		int len = strlen(binaryCode);
 		int isFlag = 0;
@@ -212,6 +230,26 @@ int* getDetailsOfInstruction(node* root, char* binaryCodeOfInstruction)
 	return code;
 }
 
+<<<<<<< HEAD
+=======
+int check_pow()
+{
+	FILE* fpread;
+	fpread = fopen("POWER.txt","r");
+	char power[100],condition[100];
+	char OFF[3] = "OFF";
+	char ON[2] = "ON";
+	while(fscanf(fpread,"%s %s",power,condition) != EOF)
+	{
+		if(strcmp(condition,OFF) == 0){
+			return 0;
+		} else if(strcmp(condition,ON) == 0){
+			return 1;
+		}
+	}
+	return -1;
+}
+>>>>>>> origin/master
 void getOperand(char* binaryCodeOfInstruction, char* operand, int start)
 {
 	int ind = 0;
